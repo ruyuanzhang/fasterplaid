@@ -78,7 +78,7 @@ try
     sr_hor = round(screenRect(3)/2); sr_ver = round(screenRect(4)/2);
       
     %% show instruction
-    Screen('DrawText',w,[int2str(total_trials),' Trials. Press space key to start the experiment'],sr_hor-300,sr_ver-180,0);
+    Screen('DrawText',w,[int2str(total_trials),' trials. Press space key to start the experiment'],sr_hor-300,sr_ver-180,0);
     Screen('DrawText',w,'Choose one of two motion directions',sr_hor-300,sr_ver-140,0); 
     Screen('DrawText',w,'Left, press "leftArrow"; Right, press "rightArrow"',sr_hor-300,sr_ver-100,0);
     Screen('DrawLines',w,cuexy1,2,0,[sr_hor sr_ver],1);
