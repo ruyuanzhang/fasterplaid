@@ -72,7 +72,7 @@ try
     data(:,5) = a(:,3); % direction
     
     %% open Screen windows and show instruction and welcome interface
-    [w, screenRect, oldclut]=pton([],[],[],1); % note here should specify clut file
+    [w, screenRect, oldclut]=pton([],[],[],1,0); % note here should specify clut file
     Screen('BlendFunction',w,'GL_SRC_ALPHA','GL_ONE_MINUS_SRC_ALPHA');
     Screen('TextSize',w,30); Screen('TextFont',w,'Charcoal');
     sr_hor = round(screenRect(3)/2); sr_ver = round(screenRect(4)/2);
@@ -122,14 +122,14 @@ try
                 corrKey = 'RightArrow';
         end
         %% ------------------------premake the movie before the trial----------------------------
-        movie1 = createDriftGrating(bps, ...
+        movie1 = createdriftgrating(bps, ...
             'orientation',45, ...
             'contrast', contrast/100,...
             'cpfov',cpfov, ...
             'temporalMask',time_gauss, ...
             'TFstep', TFstep, ...
             'mvLength', mvLength);
-        movie2 = createDriftGrating(bps, ...
+        movie2 = createdriftgrating(bps, ...
             'orientation',-45, ...
             'contrast', contrast/100,...
             'cpfov',cpfov, ...
@@ -176,12 +176,16 @@ try
         Priority(0);
         
         %% get and analyze the response 
-        rs_key = getkeyresp({'LeftArrow','RightArrow'});        
+        rs_key = getkeyresp({'LeftArrow','RightArrow','ESCAPE'});        
         ampS = 1;
         if strcmp(rs_key, corrKey)
             rs = 1;
             Snd('Play',sin((0:1000))*ampS);
             Snd('Wait');
+        elseif strcmp(rs_key, 'ESCAPE')
+            %exit flag
+            sca;
+            return;
         else
             rs=0;
         end

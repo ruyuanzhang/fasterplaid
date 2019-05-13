@@ -4,7 +4,7 @@ This is the matlab code repository for the faster plaid project. The main contri
 
 ## Instructions
 ### Preparation
-1. Please download utility functions from [RZutil](https://github.com/ruyuanzhang/RZutil) and [knkutils](https://github.com/kendrickkay/knkutils), and add the functions to your matlab path
+1. Please download utility functions from [RZutil](https://github.com/ruyuanzhang/RZutil) and [knkutils](https://github.com/kendrickkay/knkutils), and add the functions to your matlab path. **Please first add RZutil and then knkutils to your path, otherwise you might experience path problems**
 2. Make sure you have the proper measure of your monitor. The key factor is ***scale_factor***, which indicates how many acrmin in one screen pixel.
 
 ### Running experiment

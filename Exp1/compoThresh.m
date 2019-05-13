@@ -72,13 +72,13 @@ try
     data(:,5) = a(:,3); % direction
     
     %% open Screen windows and show instruction and welcome interface
-    [w, screenRect, oldclut]=pton([],[],[],1); % note here should specify clut file
+    [w, screenRect, oldclut]=pton([],[],[],1,0); % note here should specify clut file
     Screen('BlendFunction',w,'GL_SRC_ALPHA','GL_ONE_MINUS_SRC_ALPHA');
     Screen('TextSize',w,30); Screen('TextFont',w,'Charcoal');
     sr_hor = round(screenRect(3)/2); sr_ver = round(screenRect(4)/2);
       
     %% show instruction
-    Screen('DrawText',w,[int2str(total_trials),'  nTrials. Press space key to start the experiment'],sr_hor-300,sr_ver-180,0);
+    Screen('DrawText',w,[int2str(total_trials),' Trials. Press space key to start the experiment'],sr_hor-300,sr_ver-180,0);
     Screen('DrawText',w,'Choose one of two motion directions',sr_hor-300,sr_ver-140,0); 
     Screen('DrawText',w,'Left, press "leftArrow"; Right, press "rightArrow"',sr_hor-300,sr_ver-100,0);
     Screen('DrawLines',w,cuexy1,2,0,[sr_hor sr_ver],1);
@@ -122,10 +122,10 @@ try
                 corrKey = 'RightArrow';
         end
         %% ------------------------premake the movie before the trial----------------------------
-        movie = createDriftGrating(bps, ...
+        movie = createdriftgrating(bps, ...
             'orientation',orientation, ...
             'cpfov',cpfov, ...
-            'temporal',time_gauss, ...
+            'temporalMask',time_gauss, ...
             'TFstep', TFstep, ...
             'mvLength', mvLength,...
             'windowPtr',w);
@@ -163,14 +163,16 @@ try
         Priority(0);
         
         %% get and analyze the response 
-        rs_key = getkeyresp({'LeftArrow','RightArrow'});        
+        rs_key = getkeyresp({'LeftArrow','RightArrow','ESCAPE'});        
         ampS = 1;
         if strcmp(rs_key, corrKey)
             rs = 1;
             Snd('Play',sin((0:1000))*ampS);
             Snd('Wait');
-        else
-            rs=0;
+        elseif strcmp(rs_key, 'ESCAPE')
+            %exit flag
+            sca;
+            return;
         end
         data(trial, 6:8) = [time_sigmaP, KbName(rs_key), rs]; % Here time_sigmaP millisecs
         
@@ -217,6 +219,3 @@ catch errorName
     rethrow(errorName);
     ptoff(oldclut);
 end
-
-
-function restoreMonitor
