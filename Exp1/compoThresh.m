@@ -114,10 +114,10 @@ try
         %% calculate the moving direcion
         direction = data(trial,5); %
         switch direction
-            case 1%left
+            case 1 %left
                 angle_patch = 0;
                 corrKey = 'LeftArrow';
-            case 2%right
+            case 2 %right
                 angle_patch = 180;
                 corrKey = 'RightArrow';
         end
@@ -131,7 +131,7 @@ try
             'windowPtr',w);
         
         %%  initiate trial
-        % before stimulus prep
+        % Before stimulus prep
         t2 = GetSecs - t1;
         
         FlushEvents('keyDown');
@@ -204,7 +204,7 @@ try
     time = toc/60
     
     %% save data
-    filename = strcat(subjInitials,'_compo_',num2str,'.mat');
+    filename = strcat(subjInitials,'_compo_',gettimestr,'.mat');
     IsExist = exist(filename,'file');
     if IsExist
         error('data file name exists')

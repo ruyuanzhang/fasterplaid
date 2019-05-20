@@ -217,7 +217,7 @@ try
     time = toc/60
     
     %% save data
-    filename = strcat(subjInitials,'_compo_',num2str,'.mat');
+    filename = strcat(subjInitials,'_plaid_',gettimestr,'.mat');
     IsExist = exist(filename,'file');
     if IsExist
         error('data file name exists')
