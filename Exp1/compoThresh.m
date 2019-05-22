@@ -173,6 +173,8 @@ try
             %exit flag
             sca;
             return;
+        else
+            rs=0;
         end
         data(trial, 6:8) = [time_sigmaP, KbName(rs_key), rs]; % Here time_sigmaP millisecs
         
