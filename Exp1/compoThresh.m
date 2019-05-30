@@ -42,7 +42,7 @@ try
     TFstep = 2*pi*SF*speed/frameRate; % temporal frequency step
     amplitude = 127 * contrast/100;
     %% ------- other exp parameters ----------------
-    nTrials = 160; % Number of trials for each staircase
+    nTrials = 80; % Number of trials for each staircase
     cuexy1=[3 40 35 40 35 40;
         0 0 -5 0 5 0];
     cuexy1=[cuexy1 -cuexy1];% for, orientation==0
