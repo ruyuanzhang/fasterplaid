@@ -1,6 +1,6 @@
-function compoThresh(subjInitials, p)
-% function compoThresh(subjInitials,p)
-% This function is to generate component motion stimulus and measure the
+function plaidThresh_mls(subjInitials, p)
+% function plaidThresh(subjInitials, p)
+% This function is to generate plaid motion stimulus and measure the
 % duration threshold for a subject to perform a 2AFC directional judgment task
 
 % Input:
@@ -78,7 +78,7 @@ try
     sr_hor = round(screenRect(3)/2); sr_ver = round(screenRect(4)/2);
       
     %% show instruction
-    Screen('DrawText',w,[int2str(total_trials),' trials. Press space key to start the experiment'],sr_hor-300,sr_ver-180,0);
+    Screen('DrawText',w,[int2str(total_trials),'  nTrials. Press space key to start the experiment'],sr_hor-300,sr_ver-180,0);
     Screen('DrawText',w,'Choose one of two motion directions',sr_hor-300,sr_ver-140,0); 
     Screen('DrawText',w,'Left, press "leftArrow"; Right, press "rightArrow"',sr_hor-300,sr_ver-100,0);
     Screen('DrawLines',w,cuexy1,2,0,[sr_hor sr_ver],1);
@@ -114,24 +114,37 @@ try
         %% calculate the moving direcion
         direction = data(trial,5); %
         switch direction
-            case 1 %left
+            case 1%left
                 angle_patch = 0;
                 corrKey = 'LeftArrow';
-            case 2 %right
+            case 2%right
                 angle_patch = 180;
                 corrKey = 'RightArrow';
         end
         %% ------------------------premake the movie before the trial----------------------------
-        movie = createdriftgrating(bps, ...
-            'orientation',orientation, ...
+        movie1 = createdriftgrating(bps, ...
+            'orientation',45, ...
+            'contrast', contrast/100,...
             'cpfov',cpfov, ...
             'temporalMask',time_gauss, ...
             'TFstep', TFstep, ...
-            'mvLength', mvLength,...
-            'windowPtr',w);
+            'mvLength', mvLength);
+        movie2 = createdriftgrating(bps, ...
+            'orientation',-45, ...
+            'contrast', contrast/100,...
+            'cpfov',cpfov, ...
+            'temporalMask',time_gauss, ...
+            'TFstep', TFstep, ...
+            'mvLength', mvLength);
+        for i=1:movie1.mvLength
+            tmp = movie1.driftGratingImg(:,:,i)-movie1.background + movie2.driftGratingImg(:,:,i);
+            movie{i}=Screen('MakeTexture',w,tmp);
+            clear tmp;
+        end
+        clear movie1 movie2;
         
         %%  initiate trial
-        % Before stimulus prep
+        % before stimulus prep
         t2 = GetSecs - t1;
         
         FlushEvents('keyDown');
@@ -155,7 +168,7 @@ try
         priorityLevel=MaxPriority(w);Priority(priorityLevel);
         Screen('Flip',w);
         for i = 1:mvLength
-            Screen('DrawTexture', w, movie.driftGratingMovie{i}, movieRect, screenPatch, angle_patch);
+            Screen('DrawTexture', w, movie{i}, movieRect, screenPatch, angle_patch);
             Screen('Flip',w);
         end
         Screen('FillRect',w, background);
@@ -198,15 +211,13 @@ try
         end
         
         %% clear movie from memory in this trial
-        for i = 1:mvLength
-            Screen(movie.driftGratingMovie{i}, 'Close');
-        end
+        for i = 1:mvLength; Screen(movie{i}, 'Close');end
         trial = trial+1;
     end % end main loop
     time = toc/60
     
     %% save data
-    filename = strcat(subjInitials,'_compo_',gettimestr,'.mat');
+    filename = strcat(subjInitials,'_plaidmls_',gettimestr,'.mat');
     IsExist = exist(filename,'file');
     if IsExist
         error('data file name exists')
@@ -218,6 +229,6 @@ try
 catch errorName
     sca; % exit screens
     save errorName_debug;
-    rethrow(errorName);
     ptoff(oldclut);
+    rethrow(errorName);
 end

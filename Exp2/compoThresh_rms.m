@@ -1,4 +1,4 @@
-function compoThresh(subjInitials, p)
+function compoThresh_rms(subjInitials, p)
 % function compoThresh(subjInitials,p)
 % This function is to generate component motion stimulus and measure the
 % duration threshold for a subject to perform a 2AFC directional judgment task
@@ -13,8 +13,8 @@ if notDefined('subjInitials')
     error('You must input subject initials')
 end
 if notDefined('p')
-    p.contrast = 50;
-    p.speed = 4;
+    p.contrast = 70.67; % 70.67 contrast match the plaid rms contrast
+    p.speed = 5.66; % we match the plaid speed
 end
 
 try
@@ -206,7 +206,7 @@ try
     time = toc/60
     
     %% save data
-    filename = strcat(subjInitials,'_compo_',gettimestr,'.mat');
+    filename = strcat(subjInitials,'_comporms_',gettimestr,'.mat');
     IsExist = exist(filename,'file');
     if IsExist
         error('data file name exists')
